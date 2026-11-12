@@ -1,0 +1,204 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1000" viewBox="0 0 1800 1000" font-family="DejaVu Sans, Arial, sans-serif">
+  <defs>
+    <marker id="ar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#232F3E"/>
+    </marker>
+    <marker id="aro" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="8" markerHeight="8" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#D9480F"/>
+    </marker>
+    <marker id="arg" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto-start-reverse">
+      <path d="M0,0 L10,5 L0,10 z" fill="#8A94A3"/>
+    </marker>
+    <style>
+      .t  { font-size: 17px; font-weight: bold; fill: #232F3E; }
+      .s  { font-size: 13px; fill: #4A5563; }
+      .xs { font-size: 12px; fill: #5F6B7A; }
+      .lbl{ font-size: 14px; font-weight: bold; }
+      .box{ fill: #FFFFFF; stroke: #232F3E; stroke-width: 1.6; rx: 10; }
+      .num{ fill: #D9480F; }
+      .numt{ font-size: 14px; font-weight: bold; fill: #FFFFFF; }
+    </style>
+  </defs>
+
+  <rect width="1800" height="1000" fill="#FFFFFF"/>
+
+  <!-- Title -->
+  <text x="40" y="52" font-size="28" font-weight="bold" fill="#232F3E">CI/CD Pipeline on AWS — Architecture</text>
+  <text x="40" y="80" class="s">Every push to GitHub is automatically built, tested and deployed to Elastic Beanstalk. Failing tests stop the pipeline before deploy.</text>
+
+  <!-- Developer -->
+  <rect x="40" y="370" width="150" height="100" class="box"/>
+  <text x="115" y="408" text-anchor="middle" class="t">Developer</text>
+  <text x="115" y="432" text-anchor="middle" class="s">git push</text>
+  <text x="115" y="451" text-anchor="middle" class="s">origin master</text>
+
+  <!-- GitHub -->
+  <rect x="235" y="370" width="170" height="100" class="box" style="fill:#F6F8FA"/>
+  <text x="320" y="403" text-anchor="middle" class="t">GitHub</text>
+  <text x="320" y="427" text-anchor="middle" class="s">aws-cicd-pipeline</text>
+  <text x="320" y="446" text-anchor="middle" class="xs">branch: master</text>
+  <text x="320" y="462" text-anchor="middle" class="xs">GitHub App installed</text>
+
+  <line x1="190" y1="420" x2="231" y2="420" stroke="#D9480F" stroke-width="2.4" marker-end="url(#aro)"/>
+  <circle cx="211" cy="395" r="13" class="num"/><text x="211" y="400" text-anchor="middle" class="numt">1</text>
+
+  <!-- AWS Cloud boundary -->
+  <rect x="440" y="110" width="1140" height="840" rx="14" fill="#FFFBF7" stroke="#D9480F" stroke-width="2" stroke-dasharray="9 6"/>
+  <rect x="440" y="110" width="430" height="32" rx="6" fill="#D9480F"/>
+  <text x="456" y="132" font-size="15" font-weight="bold" fill="#FFFFFF">AWS Cloud · Asia Pacific (Mumbai) ap-south-1</text>
+
+  <!-- CodePipeline container -->
+  <rect x="475" y="165" width="785" height="330" rx="12" fill="#F2F5FA" stroke="#5A6B8C" stroke-width="1.6"/>
+  <text x="495" y="194" class="lbl" fill="#232F3E">AWS CodePipeline</text>
+  <text x="652" y="194" class="s">cicd-demo-pipeline · V2 · Queued execution mode</text>
+
+  <!-- Source stage -->
+  <rect x="500" y="220" width="215" height="175" class="box"/>
+  <rect x="500" y="220" width="215" height="30" rx="10" fill="#232F3E"/>
+  <text x="607" y="241" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFF">STAGE 1 · SOURCE</text>
+  <text x="607" y="276" text-anchor="middle" class="t">GitHub (via</text>
+  <text x="607" y="297" text-anchor="middle" class="t">CodeConnections)</text>
+  <text x="607" y="324" text-anchor="middle" class="s">Webhook trigger:</text>
+  <text x="607" y="343" text-anchor="middle" class="s">push on master</text>
+  <text x="607" y="372" text-anchor="middle" class="xs">output → SourceArtifact</text>
+
+  <!-- Build stage -->
+  <rect x="760" y="220" width="240" height="175" class="box"/>
+  <rect x="760" y="220" width="240" height="30" rx="10" fill="#232F3E"/>
+  <text x="880" y="241" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFF">STAGE 2 · BUILD &amp; TEST</text>
+  <text x="880" y="276" text-anchor="middle" class="t">AWS CodeBuild</text>
+  <text x="880" y="296" text-anchor="middle" class="xs">cicd-demo-build · 2 vCPU / 4 GiB</text>
+  <text x="880" y="321" text-anchor="middle" class="s">buildspec.yml:</text>
+  <text x="880" y="340" text-anchor="middle" class="s" font-family="DejaVu Sans Mono, monospace">npm ci → npm test</text>
+  <rect x="768" y="352" width="224" height="28" rx="6" fill="#FDECEC" stroke="#C92A2A" stroke-width="1"/>
+  <text x="880" y="371" text-anchor="middle" font-size="12" font-weight="bold" fill="#C92A2A">Quality gate: tests fail = stop</text>
+
+  <!-- Deploy stage -->
+  <rect x="1045" y="220" width="190" height="175" class="box"/>
+  <rect x="1045" y="220" width="190" height="30" rx="10" fill="#232F3E"/>
+  <text x="1140" y="241" text-anchor="middle" font-size="14" font-weight="bold" fill="#FFF">STAGE 3 · DEPLOY</text>
+  <text x="1140" y="276" text-anchor="middle" class="t">Elastic</text>
+  <text x="1140" y="297" text-anchor="middle" class="t">Beanstalk action</text>
+  <text x="1140" y="324" text-anchor="middle" class="s">input:</text>
+  <text x="1140" y="343" text-anchor="middle" class="s">BuildArtifact</text>
+  <text x="1140" y="372" text-anchor="middle" class="xs">(exactly what was tested)</text>
+
+  <!-- stage arrows -->
+  <line x1="715" y1="307" x2="756" y2="307" stroke="#232F3E" stroke-width="2.2" marker-end="url(#ar)"/>
+  <line x1="1000" y1="307" x2="1041" y2="307" stroke="#232F3E" stroke-width="2.2" marker-end="url(#ar)"/>
+
+
+  <!-- GitHub -> Source (webhook) -->
+  <path d="M405,420 L455,420 L455,307 L496,307" fill="none" stroke="#D9480F" stroke-width="2.4" marker-end="url(#aro)"/>
+  <circle cx="455" cy="365" r="13" class="num"/><text x="455" y="370" text-anchor="middle" class="numt">2</text>
+
+  <!-- S3 artifact store -->
+  <rect x="500" y="555" width="420" height="100" class="box" style="fill:#F1F8F2;stroke:#2B8A3E"/>
+  <text x="520" y="587" class="t" style="fill:#1E6B30">Amazon S3 · pipeline artifact store</text>
+  <text x="520" y="613" class="s">SourceArtifact (zipped commit)</text>
+  <text x="520" y="634" class="s">BuildArtifact (app.js, server.js, package*.json) · encrypted</text>
+
+  <!-- Source -> S3 -->
+  <line x1="580" y1="395" x2="580" y2="551" stroke="#D9480F" stroke-width="2.2" marker-end="url(#aro)"/>
+  <circle cx="580" cy="520" r="13" class="num"/><text x="580" y="525" text-anchor="middle" class="numt">3</text>
+  <!-- S3 -> Build (input) -->
+  <line x1="820" y1="551" x2="820" y2="399" stroke="#D9480F" stroke-width="2.2" marker-end="url(#aro)"/>
+  <circle cx="820" cy="520" r="13" class="num"/><text x="820" y="525" text-anchor="middle" class="numt">4</text>
+  <!-- Build -> S3 (output) -->
+  <line x1="900" y1="399" x2="900" y2="551" stroke="#D9480F" stroke-width="2.2" marker-end="url(#aro)"/>
+  <circle cx="900" cy="520" r="13" class="num"/><text x="900" y="525" text-anchor="middle" class="numt">5</text>
+
+  <!-- CloudWatch Logs -->
+  <rect x="975" y="555" width="285" height="100" class="box" style="fill:#FFF8E6;stroke:#B7791F"/>
+  <text x="995" y="587" class="t" style="fill:#8A5A00">Amazon CloudWatch Logs</text>
+  <text x="995" y="613" class="s">Build output streamed live</text>
+  <text x="995" y="634" class="s">→ first stop when a build fails</text>
+  <path d="M970,395 L970,470 L1105,470 L1105,551" fill="none" stroke="#8A94A3" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arg)"/>
+
+  <!-- IAM -->
+  <rect x="475" y="700" width="785" height="105" class="box" style="fill:#F7F2FC;stroke:#7048E8"/>
+  <text x="495" y="730" class="t" style="fill:#5F3DC4">AWS IAM · one role per service (least privilege, no stored keys)</text>
+  <text x="495" y="757" class="s">• CodePipeline service role  • CodeBuild service role (artifacts + logs)</text>
+  <text x="495" y="780" class="s">• Elastic Beanstalk service role  • EC2 instance profile: aws-elasticbeanstalk-ec2-role</text>
+
+  <!-- Cost & limits -->
+  <rect x="475" y="835" width="380" height="90" class="box" style="fill:#FAFBFC;stroke:#8A94A3"/>
+  <text x="495" y="865" class="t">AWS Budgets</text>
+  <text x="495" y="890" class="s">Zero-spend alert → email on any charge</text>
+  <text x="495" y="910" class="xs">+ 15-min build timeout, smallest compute, no NAT</text>
+
+  <rect x="880" y="835" width="380" height="90" class="box" style="fill:#FAFBFC;stroke:#8A94A3"/>
+  <text x="900" y="865" class="t">Service Quotas</text>
+  <text x="900" y="890" class="s">CodeBuild Linux/Small concurrent builds</text>
+  <text x="900" y="910" class="xs">raised from 0 → 15 (new-account limit)</text>
+
+  <!-- Elastic Beanstalk environment -->
+  <rect x="1295" y="165" width="255" height="640" rx="12" fill="#EEF6FF" stroke="#1C7ED6" stroke-width="1.8"/>
+  <text x="1312" y="194" class="lbl" fill="#1864AB">AWS Elastic Beanstalk</text>
+  <text x="1312" y="214" class="xs">Cicd-demo-app-env · single instance</text>
+
+  <rect x="1315" y="235" width="215" height="62" class="box" style="stroke:#1C7ED6"/>
+  <text x="1422" y="261" text-anchor="middle" class="t" style="font-size:15px">Elastic IP</text>
+  <text x="1422" y="283" text-anchor="middle" class="xs">public URL / static IPv4</text>
+
+  <rect x="1315" y="315" width="215" height="400" rx="10" fill="#FFFFFF" stroke="#1C7ED6" stroke-width="1.4" stroke-dasharray="6 4"/>
+  <text x="1330" y="338" class="xs">Security group: HTTP 80 in</text>
+  <text x="1330" y="356" class="xs">Auto Scaling group (size 1)</text>
+
+  <rect x="1330" y="372" width="185" height="320" class="box" style="fill:#F8FBFF;stroke:#1864AB"/>
+  <text x="1422" y="400" text-anchor="middle" class="t">EC2 instance</text>
+  <text x="1422" y="420" text-anchor="middle" font-size="10.5" fill="#5F6B7A">t3.micro · Amazon Linux 2023</text>
+
+  <rect x="1348" y="440" width="150" height="60" rx="8" fill="#E7F5FF" stroke="#1C7ED6"/>
+  <text x="1423" y="465" text-anchor="middle" font-size="14" font-weight="bold" fill="#1864AB">nginx</text>
+  <text x="1423" y="485" text-anchor="middle" class="xs">reverse proxy :80</text>
+  <line x1="1423" y1="500" x2="1423" y2="536" stroke="#232F3E" stroke-width="2" marker-end="url(#ar)"/>
+  <rect x="1348" y="540" width="150" height="72" rx="8" fill="#EBFBEE" stroke="#2B8A3E"/>
+  <text x="1423" y="566" text-anchor="middle" font-size="14" font-weight="bold" fill="#1E6B30">Node.js 22 app</text>
+  <text x="1423" y="585" text-anchor="middle" class="xs">Express :8080</text>
+  <text x="1423" y="602" text-anchor="middle" class="xs">GET /  ·  GET /health</text>
+
+  <text x="1422" y="634" text-anchor="middle" font-size="11" fill="#5F6B7A">health checks · logs</text>
+  <text x="1422" y="650" text-anchor="middle" font-size="11" fill="#5F6B7A">app versions kept in S3</text>
+  <text x="1422" y="666" text-anchor="middle" font-size="11" fill="#5F6B7A">rollback = redeploy</text>
+  <text x="1422" y="682" text-anchor="middle" font-size="11" fill="#5F6B7A">a previous version</text>
+
+  <line x1="1508" y1="297" x2="1508" y2="368" stroke="#232F3E" stroke-width="2" marker-end="url(#ar)"/>
+
+  <!-- Deploy -> EB -->
+  <line x1="1235" y1="307" x2="1326" y2="420" stroke="#D9480F" stroke-width="2.4" marker-end="url(#aro)"/>
+  <circle cx="1270" cy="350" r="13" class="num"/><text x="1270" y="355" text-anchor="middle" class="numt">6</text>
+
+  <!-- Users -->
+  <rect x="1625" y="215" width="140" height="100" class="box"/>
+  <text x="1695" y="253" text-anchor="middle" class="t">Users</text>
+  <text x="1695" y="276" text-anchor="middle" class="s">browser</text>
+  <text x="1695" y="295" text-anchor="middle" class="xs">HTTP</text>
+  <line x1="1621" y1="266" x2="1534" y2="266" stroke="#D9480F" stroke-width="2.4" marker-end="url(#aro)"/>
+  <circle cx="1592" cy="240" r="13" class="num"/><text x="1592" y="245" text-anchor="middle" class="numt">7</text>
+
+  <!-- Legend -->
+  <rect x="40" y="540" width="370" height="385" rx="10" fill="#FAFBFC" stroke="#D5DAE1"/>
+  <text x="58" y="570" font-size="16" font-weight="bold" fill="#232F3E">Flow on every push</text>
+  <g class="s">
+    <circle cx="68" cy="600" r="11" class="num"/><text x="68" y="605" text-anchor="middle" class="numt" style="font-size:12px">1</text>
+    <text x="88" y="605">Developer pushes code to master</text>
+    <circle cx="68" cy="640" r="11" class="num"/><text x="68" y="645" text-anchor="middle" class="numt" style="font-size:12px">2</text>
+    <text x="88" y="645">GitHub webhook starts an execution</text>
+    <circle cx="68" cy="680" r="11" class="num"/><text x="68" y="685" text-anchor="middle" class="numt" style="font-size:12px">3</text>
+    <text x="88" y="685">Commit zipped to S3 (SourceArtifact)</text>
+    <circle cx="68" cy="720" r="11" class="num"/><text x="68" y="725" text-anchor="middle" class="numt" style="font-size:12px">4</text>
+    <text x="88" y="725">CodeBuild: npm ci + npm test</text>
+    <circle cx="68" cy="760" r="11" class="num"/><text x="68" y="765" text-anchor="middle" class="numt" style="font-size:12px">5</text>
+    <text x="88" y="765">Tests pass → BuildArtifact to S3</text>
+    <circle cx="68" cy="800" r="11" class="num"/><text x="68" y="805" text-anchor="middle" class="numt" style="font-size:12px">6</text>
+    <text x="88" y="805">Deployed as new EB app version</text>
+    <circle cx="68" cy="840" r="11" class="num"/><text x="68" y="845" text-anchor="middle" class="numt" style="font-size:12px">7</text>
+    <text x="88" y="845">Users get the new version over HTTP</text>
+  </g>
+  <line x1="58" y1="870" x2="392" y2="870" stroke="#D5DAE1"/>
+  <line x1="58" y1="895" x2="98" y2="895" stroke="#D9480F" stroke-width="2.4" marker-end="url(#aro)"/>
+  <text x="108" y="900" class="xs">main flow</text>
+  <line x1="190" y1="895" x2="230" y2="895" stroke="#8A94A3" stroke-width="1.8" stroke-dasharray="6 4" marker-end="url(#arg)"/>
+  <text x="240" y="900" class="xs">logs / monitoring</text>
+</svg>
